@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from flask import Flask, request, jsonify
 import requests
 
 
@@ -75,16 +76,19 @@ def enter_phone_number(driver):
         )
         continue_button.click()
 
+        global verification_code
+        while not verification_code:
+            time.sleep(1)
+
         # Now, send the verification code to your Flask API endpoint
-        verification_code = input(
-            "Enter the verification code manually: "
-        )  # You will need to enter this code manually
         verify_input = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable(
                 (By.ID, "verify-input")
             )  # Replace with the actual ID or other locator
         )
-        verify_input.send_keys(verification_code)  # Replace with the actual phone number
+        verify_input.send_keys(
+            verification_code
+        )  # Replace with the actual phone number
 
         verify_button = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable(
@@ -95,6 +99,22 @@ def enter_phone_number(driver):
 
     except:
         print("Unable to enter phone number or verify.")
+
+
+# API
+app = Flask(__name__)
+
+verification_code = None
+
+@app.route("/receive_code", methods=["POST"])
+def receive_code():
+    global verification_code
+    verification_code = request.json.get("code")
+    return jsonify({"status": "success"})
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 
 # Schedule the bot to run every day at 8 p.m.
