@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نوبت دهی آنلاین</title>
+    <style>
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .checkbox-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>نوبت دهی آنلاین</h2>
+    <div class="checkbox-container">
+        <input type="checkbox" id="acceptRules" name="acceptRules">
+        <label for="acceptRules">قبول کردن قوانین</label>
+    </div>
+    <button class="btn" onclick="bookAppointment(); window.location.href='register.html'">نوبت دهی</button>
+    <p id="message"></p>
+</div>
+
+<script>
+    function bookAppointment() {
+        var checkBox = document.getElementById("acceptRules");
+        var message = document.getElementById("message");
+
+        if (checkBox.checked === true) {
+            message.innerHTML = "نوبت با موفقیت رزرو شد!";
+            message.style.color = "green";
+        } else {
+            message.innerHTML = "لطفاً قوانین را قبول کنید.";
+            message.style.color = "red";
+        }
+    }
+</script>
+
+</body>
+</html>
